@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from './axios';
 import './Row.css';
+import { API_KEY } from './requests';
 import YouTube from "react-youtube";
-import movieTrailer from "movie-trailer";
 
 const base_url  = "https://image.tmdb.org/t/p/original/";
 
 function Row({ title, fetchUrl, isLargeRow }) {
-    const [movies, setMovies] = useState([]);
+    const [shows, setShows] = useState([]);
+    const [tooltip, showTooltip] = useState("");
     const [trailerUrl, setTrailerUrl] = useState("");
+
+    const onMouseEnter = (show) => {
+        showTooltip(`${show?.title || show?.name}\n${show?.overview}`)
+    };
+
+    const onMouseLeave = () => {
+        showTooltip("");
+    }
 
     //A snippet of code which runs based on a specific condition/variable
      useEffect(() => {
         // if brackets blank, run once when the row loads and don't run again
         async function fetchData() {
             const request = await axios.get(fetchUrl);
-            setMovies(request.data.results);
+            setShows(request.data.results);
             return request;
         }
         fetchData();
@@ -30,14 +39,17 @@ function Row({ title, fetchUrl, isLargeRow }) {
          },
      };
 
-    const handleClick = (movie) => {
+    const handleClick = (show) => {
        if (trailerUrl) {
             setTrailerUrl("");
         } else {
-            movieTrailer(movie?.title || movie?.name || movie?.original_name || "")
-            .then((url) => {
-                const urlParams = new URLSearchParams(new URL(url).search);
-                setTrailerUrl(urlParams.get("v"));
+            console.log(show.title);
+            const media_type = (show?.hasOwnProperty('release_date')) ? "movie" : "tv";
+            axios.get(`/${media_type}/${show?.id}/videos?api_key=${API_KEY}`)
+            .then((video) => {
+                const videos = video.data.results;
+                const url = videos[0].key;
+                setTrailerUrl(url);
             })
             .catch((error) => console.log(error));
         }
@@ -48,16 +60,17 @@ function Row({ title, fetchUrl, isLargeRow }) {
             <h2>{title}</h2>
             
             <div className="row__posters">
-                {movies.map(movie => (
+                {shows.map(show => (
                     <img
-                    key={movie.id}
-                    onClick={() => handleClick(movie)} 
+                    key={show.id}
+                    onClick={() => handleClick(show)} 
                     className={`row__poster ${isLargeRow && "row__posterLarge"}`}
-                    src={`${base_url}${isLargeRow ? movie.poster_path : movie.backdrop_path}`}
-                    alt={movie.name}
+                    src={`${base_url}${isLargeRow ? show.poster_path : show.backdrop_path}`}
+                    alt={show.title} onMouseEnter={() => onMouseEnter(show)} onMouseLeave={onMouseLeave}
                     />
                 ))}
             </div>
+            {tooltip}
            {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
         </div>
     );

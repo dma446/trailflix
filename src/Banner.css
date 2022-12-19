@@ -4,6 +4,15 @@
   height: 448px;
 }
 
+.banner__video {
+  padding-top: 55px;
+  display: block;
+  max-width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
 .banner__contents {
   margin-left: 30px;
   padding-top: 140px;
