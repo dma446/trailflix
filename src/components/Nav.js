@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import logo from "../logo.svg";
-import tmdb_logo from "../tmdb_logo.svg"
+import logo from "../assets/logo.svg";
+import tmdb_logo from "../assets/tmdb_logo.svg"
 import "./Nav.css";
 
 function Nav() {
