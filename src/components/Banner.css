@@ -1,5 +1,6 @@
 .banner {
   color: white;
+  text-shadow: 2px 2px 4px #000;
   object-fit: contain;
   height: 448px;
 }

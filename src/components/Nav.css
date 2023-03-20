@@ -24,7 +24,7 @@
   object-fit: contain;
 }
 
-.nav__avatar {
+.nav__tmdb {
   position: fixed;
   right: 20px;
   width: 30px;

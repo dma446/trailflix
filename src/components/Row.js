@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from './axios';
+import axios from 'axios';
 import './Row.css';
-import { API_KEY } from './requests';
+import {fetchVideo} from '../utils';
 import YouTube from "react-youtube";
 
 const base_url  = "https://image.tmdb.org/t/p/original/";
 
-function Row({ title, fetchUrl, isLargeRow }) {
+function Row({ title, category, isLargeRow }) {
     const [shows, setShows] = useState([]);
     const [tooltip, showTooltip] = useState("");
     const [trailerUrl, setTrailerUrl] = useState("");
@@ -22,13 +22,19 @@ function Row({ title, fetchUrl, isLargeRow }) {
     //A snippet of code which runs based on a specific condition/variable
      useEffect(() => {
         // if brackets blank, run once when the row loads and don't run again
-        async function fetchData() {
-            const request = await axios.get(fetchUrl);
-            setShows(request.data.results);
-            return request;
+        function fetchData() {
+            const options = {
+                method: 'GET',
+                url: 'http://localhost:8000',
+                params: {category: category}
+            };
+            axios.request(options)
+                .then((list) => {
+                    setShows(list.data.results);
+                });
         }
         fetchData();
-     }, [fetchUrl]); //<-- Any variable inside a useEffect needs to be put inside this bracket
+     }, [category]); //<-- Any variable inside a useEffect needs to be put inside this bracket
      
      const opts = {
          height: "390",
@@ -43,15 +49,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
        if (trailerUrl) {
             setTrailerUrl("");
         } else {
-            console.log(show.title);
-            const media_type = (show?.hasOwnProperty('release_date')) ? "movie" : "tv";
-            axios.get(`/${media_type}/${show?.id}/videos?api_key=${API_KEY}`)
-            .then((video) => {
-                const videos = video.data.results;
-                const url = videos[0].key;
-                setTrailerUrl(url);
-            })
-            .catch((error) => console.log(error));
+            fetchVideo(show, setTrailerUrl);
         }
     };
 

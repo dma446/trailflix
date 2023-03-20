@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import logo from "./logo.svg";
+import logo from "../logo.svg";
+import tmdb_logo from "../tmdb_logo.svg"
 import "./Nav.css";
 
 function Nav() {
@@ -22,15 +23,15 @@ function Nav() {
             <img
                 className="nav__logo"
                 src={logo}
-                alt="Netflix Logo"
+                alt="Trailflix Logo"
             />
             <img
-                className="nav__avatar"
-                src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-                alt="Avatar"
+                className="nav__tmdb"
+                src={tmdb_logo}
+                alt="TMDB Logo"
             />
         </div>
     )
 }
 
-export default Nav
+export default Nav;
