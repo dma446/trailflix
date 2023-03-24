@@ -25,7 +25,7 @@ function Row({ title, category, isLargeRow }) {
         function fetchData() {
             const options = {
                 method: 'GET',
-                url: 'http://localhost:8000',
+                url: 'https://us-central1-trailfix-6b2d2.cloudfunctions.net/app',
                 params: {category: category}
             };
             axios.request(options)
