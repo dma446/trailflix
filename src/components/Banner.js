@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import YouTube from 'react-youtube';
 import './Banner.css';
-import {fetchVideo} from '../utils';
-import axios from 'axios';
+import {fetchRandomShow, fetchVideo} from '..';
 
 function Banner() {
     const [show, setShow] = useState([]);
     const [trailerUrl, setTrailerUrl] = useState("");
 
     useEffect(() => {
-        function fetchData() {  
-            const options = {
-                method: 'GET',
-                url: 'https://us-central1-trailfix-6b2d2.cloudfunctions.net/app',
-                params: {category: 'trending'}
-            };
-            axios.request(options)
-                .then((list) => {
-                    setShow(list.data.results[Math.floor(Math.random() * list.data.results.length)]);
-                });
-        }
-        fetchData();   
+        fetchRandomShow(setShow);
     }, []);
     
     function truncate(str, n) {

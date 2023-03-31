@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './Row.css';
-import {fetchVideo} from '../utils';
+import {fetchShows, fetchVideo} from '..';
 import YouTube from "react-youtube";
 
 const base_url  = "https://image.tmdb.org/t/p/original/";
@@ -22,18 +21,7 @@ function Row({ title, category, isLargeRow }) {
     //A snippet of code which runs based on a specific condition/variable
      useEffect(() => {
         // if brackets blank, run once when the row loads and don't run again
-        function fetchData() {
-            const options = {
-                method: 'GET',
-                url: 'https://us-central1-trailfix-6b2d2.cloudfunctions.net/app',
-                params: {category: category}
-            };
-            axios.request(options)
-                .then((list) => {
-                    setShows(list.data.results);
-                });
-        }
-        fetchData();
+        fetchShows(setShows, category);
      }, [category]); //<-- Any variable inside a useEffect needs to be put inside this bracket
      
      const opts = {
