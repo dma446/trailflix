@@ -1,3 +1,3 @@
-Link to website: https://trailfix-6b2d2.web.app/
+Link to website: https://trail-flix.firebaseapp.com/
 
 ![home](preview.png)
