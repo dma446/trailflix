@@ -92,7 +92,7 @@ export const fetchVideo = async(show, setTrailerUrl) => {
   axios.request(options)
     .then((video) => {
         const videos = video.data.results;
-        const url = videos[0].key;
+        const url = videos[videos.length-1].key;
         setTrailerUrl(url);
     })
     .catch((error) => console.log(error));
